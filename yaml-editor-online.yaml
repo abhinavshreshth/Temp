@@ -1,0 +1,26 @@
+openapi: 3.0.0
+info:
+  title: Your API Documentation
+  version: 1.0.0
+servers:
+  - url: https://wss1.mtsp.co.in:16107
+paths:
+  /instruments:
+    get:
+      summary: Get Instruments
+      parameters:
+        - name: API_KEY
+          in: header
+          required: true
+          schema:
+            type: string
+          example: "1iS0Uwpa|mQfDcMQf$mn9fXxk"
+        - name: API_SECRET
+          in: header
+          required: true
+          schema:
+            type: string
+          example: "pg&<$t5fYW&*h%s*Cczq7vE2"
+      responses:
+        '200':
+          description: Successful response
