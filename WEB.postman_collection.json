@@ -1,0 +1,542 @@
+{
+	"info": {
+		"_postman_id": "d50f1474-0d38-4eb4-99f7-6772f6f8ab41",
+		"name": "WEB_REST_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LOGIN",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}",
+							"type": "text"
+						},
+						{
+							"key": "api_secrets",
+							"value": "{{API_SECRET}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/connect/login",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"connect",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGOUT",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{API_REQUEST_TOKEN}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{ENDPOINT}}/connect/login",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"connect",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session_Token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/session/token",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"session",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User_Profile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/user/profile",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User_Margin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ENDPOINT}}/user/margins",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"user",
+						"margins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders_Regular",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "tradingsecurity",
+							"value": "3045",
+							"type": "text"
+						},
+						{
+							"key": "exchange",
+							"value": "NSECM",
+							"type": "text"
+						},
+						{
+							"key": "transaction_type",
+							"value": "BUY",
+							"type": "text"
+						},
+						{
+							"key": "order_type",
+							"value": "MARKET",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "100000",
+							"type": "text"
+						},
+						{
+							"key": "validity",
+							"value": "DAY",
+							"type": "text"
+						},
+						{
+							"key": "order_type",
+							"value": "LIMIT",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "price",
+							"value": "510",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "product_type",
+							"value": "CNC",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/orders/regular",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"orders",
+						"regular"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders_Modify_Quantity",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "order_type",
+							"value": "MARKET   ",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "quantity",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "validity",
+							"value": "DAY",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "500",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/orders/regular/2",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"orders",
+						"regular",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders_Regular_Price",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "price",
+							"value": "610",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/orders/regular/1",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"orders",
+						"regular",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders_Regular_MARKET",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "order_type",
+							"value": "MARKET",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/orders/regular/1",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"orders",
+						"regular",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders_Regular_CANCEL",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/orders/regular/1",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"orders",
+						"regular",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TRADE",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{ENDPOINT}}/trades",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"trades"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Instrument",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Api-Version",
+						"value": "3",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/instruments",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"instruments"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_KEY",
+			"value": "NK[GmyNM58xvhN8DD>UoZL8p>",
+			"type": "default"
+		},
+		{
+			"key": "API_SECRET",
+			"value": "2[o>.sq.Kg5P%evp8Z2!|mY>",
+			"type": "default"
+		},
+		{
+			"key": "API_REQUEST_TOKEN",
+			"value": "aLxtUPykr6V&j(AWR0Wk",
+			"type": "default"
+		},
+		{
+			"key": "ENDPOINT",
+			"value": "https://wss1.mtsp.co.in:16107",
+			"type": "default"
+		},
+		{
+			"key": "AUTH",
+			"value": "NK[GmyNM58xvhN8DD>UoZL8p>:aLxtUPykr6V&j(AWR0Wk",
+			"type": "default"
+		}
+	]
+}
