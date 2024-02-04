@@ -1,0 +1,269 @@
+openapi: 3.0.0
+info:
+  title: WEB_REST_API
+  version: 1.0.0
+servers:
+  - url: 'https://wss1.mtsp.co.in:16107'
+paths:
+  /connect/login:
+    get:
+      summary: 'Login API'
+      parameters:
+        - in: 'header'
+          name: 'api-version'
+          schema:
+            type: 'string'
+            default: '3'
+        - in: 'query'
+          name: 'api_key'
+          schema:
+            type: 'string'
+            default: 'EFx6R0#L<Wie5Y&GGl<D##7K0'
+        - in: 'query'
+          name: 'api_secrets'
+          schema:
+            type: 'string'
+            default: '1rB.mFZK4^<Ar85WkImZn8rD'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - default
+      summary: LOGOUT
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /session/token:
+    get:
+      tags:
+        - default
+      summary: Session_Token
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /user/profile:
+    get:
+      tags:
+        - default
+      summary: User_Profile
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /user/margins:
+    get:
+      tags:
+        - default
+      summary: User_Margin
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/regular:
+    post:
+      tags:
+        - default
+      summary: Orders_Regular
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                tradingsecurity:
+                  type: integer
+                  example: '3045'
+                exchange:
+                  type: string
+                  example: NSECM
+                transaction_type:
+                  type: string
+                  example: BUY
+                order_type:
+                  type: string
+                  example: LIMIT
+                quantity:
+                  type: integer
+                  example: '100000'
+                validity:
+                  type: string
+                  example: DAY
+                price:
+                  type: integer
+                  example: '510'
+                product_type:
+                  type: string
+                  example: CNC
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/regular/2:
+    put:
+      tags:
+        - default
+      summary: Orders_Modify_Quantity
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                order_type:
+                  type: string
+                  example: 'MARKET   '
+                quantity:
+                  type: integer
+                  example: '5'
+                validity:
+                  type: string
+                  example: DAY
+                price:
+                  type: integer
+                  example: '500'
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/regular/1:
+    put:
+      tags:
+        - default
+      summary: Orders_Regular_MARKET
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                order_type:
+                  type: string
+                  example: MARKET
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - default
+      summary: Orders_Regular_CANCEL
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /trades:
+    get:
+      tags:
+        - default
+      summary: TRADE
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /instruments:
+    get:
+      tags:
+        - default
+      summary: Instrument
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: 'apiKey'
+      in: 'header'
+      name: 'Authorization'
