@@ -1,0 +1,274 @@
+openapi 3.0.0
+info
+  title My API
+  version 1.0.0
+servers
+  - url 'httpswss1.mtsp.co.in16107'
+paths
+  connectlogin
+    post
+      summary Login Endpoint
+      requestBody
+        content
+          applicationx-www-form-urlencoded
+            schema
+              type object
+              properties
+                api_key
+                  type string
+                api_secrets
+                  type string
+      parameters
+        - name Api-Version
+          in header
+          required true
+          schema
+            type string
+          example '3'
+
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson
+              example
+                message Successful login
+    delete
+      tags
+        - default
+      summary LOGOUT
+      security
+        - ApiKeyAuth []
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+  sessiontoken
+    get
+      tags
+        - default
+      summary Session_Token
+      security
+        - ApiKeyAuth []
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+  userprofile
+    get
+      tags
+        - default
+      summary User_Profile
+      security
+        - ApiKeyAuth []
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+  usermargins
+    get
+      tags
+        - default
+      summary User_Margin
+      security
+        - ApiKeyAuth []
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+  ordersregular
+    post
+      tags
+        - default
+      summary Orders_Regular
+      security
+        - ApiKeyAuth []
+      requestBody
+        content
+          applicationx-www-form-urlencoded
+            schema
+              properties
+                tradingsecurity
+                  type integer
+                  example '3045'
+                exchange
+                  type string
+                  example NSECM
+                transaction_type
+                  type string
+                  example BUY
+                order_type
+                  type string
+                  example LIMIT
+                quantity
+                  type integer
+                  example '100000'
+                validity
+                  type string
+                  example DAY
+                price
+                  type integer
+                  example '510'
+                product_type
+                  type string
+                  example CNC
+              
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+  ordersregular2
+    put
+      tags
+        - default
+      summary Orders_Modify_Quantity
+      security
+        - ApiKeyAuth []
+      requestBody
+        content
+          applicationx-www-form-urlencoded
+            schema
+              properties
+                order_type
+                  type string
+                  example 'MARKET   '
+                quantity
+                  type integer
+                  example '5'
+                validity
+                  type string
+                  example DAY
+                price
+                  type integer
+                  example '500'
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+  ordersregular1
+    put
+      tags
+        - default
+      summary Orders_Regular_MARKET
+      security
+        - ApiKeyAuth []
+      requestBody
+        content
+          applicationx-www-form-urlencoded
+            schema
+              properties
+                order_type
+                  type string
+                  example MARKET
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+    delete
+      tags
+        - default
+      summary Orders_Regular_CANCEL
+      security
+        - ApiKeyAuth []
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+  trades
+    get
+      tags
+        - default
+      summary TRADE
+      security
+        - ApiKeyAuth []
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+  instruments
+    get
+      tags
+        - default
+      summary Instrument
+      security
+        - ApiKeyAuth []
+      parameters
+        - name Api-Version
+          in header
+          schema
+            type integer
+          example '3'
+      responses
+        '200'
+          description Successful response
+          content
+            applicationjson {}
+components
+  securitySchemes
+    ApiKeyAuth
+      type 'apiKey'
+      in 'header'
+      name 'Authorization'
