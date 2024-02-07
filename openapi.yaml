@@ -31,7 +31,13 @@ paths:
           content:
             application/json:
               example:
-                message: Successful login
+                message: User was logged in successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                message: Invalid unique key provided by user.
     delete:
       tags:
         - default
@@ -46,9 +52,35 @@ paths:
           example: '3'
       responses:
         '200':
-          description: Successful response
+          description: Logout Successful
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logout successful. You have been logged out."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
   /session/token:
     get:
       tags:
@@ -66,7 +98,33 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "ApiKey:TokenKey"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
   /user/profile:
     get:
       tags:
@@ -84,7 +142,46 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: "john_doe"
+                  email:
+                    type: string
+                    example: "john@example.com"
+                  full_name:
+                    type: string
+                    example: "John Doe"
+                  age:
+                    type: integer
+                    example: 30
+                  bio:
+                    type: string
+                    example: "Software Engineer"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
+
   /user/margins:
     get:
       tags:
@@ -102,7 +199,40 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_margin:
+                    type: number
+                    example: 10000.00
+                  available_margin:
+                    type: number
+                    example: 5000.00
+                  used_margin:
+                    type: number
+                    example: 5000.00
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
+
   /orders/regular:
     post:
       tags:
@@ -147,9 +277,49 @@ paths:
           example: '3'
       responses:
         '200':
-          description: Successful response
+          description: Successful order placement
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    example: "ORD123456"
+                  message:
+                    type: string
+                    example: "Order placed successfully."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Bad Request: Invalid request parameters."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
+
   /orders/regular/2:
     put:
       tags:
@@ -182,9 +352,58 @@ paths:
           example: '3'
       responses:
         '200':
-          description: Successful response
+          description: Successful order modification
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    example: "ORD123457"
+                  message:
+                    type: string
+                    example: "Order quantity modified successfully."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Bad Request: Invalid request parameters."
+        '404':
+          description: Order Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Order Not Found: The specified order does not exist."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
   /orders/regular/1:
     put:
       tags:
@@ -208,9 +427,58 @@ paths:
           example: '3'
       responses:
         '200':
-          description: Successful response
+          description: Successful order update
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    example: "ORD123458"
+                  message:
+                    type: string
+                    example: "Order updated to MARKET type successfully."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Bad Request: Invalid request parameters."
+        '404':
+          description: Order Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Order Not Found: The specified order does not exist."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
     delete:
       tags:
         - default
@@ -225,9 +493,48 @@ paths:
           example: '3'
       responses:
         '200':
-          description: Successful response
+          description: Successful order cancellation
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    example: "ORD123458"
+                  message:
+                    type: string
+                    example: "Order canceled successfully."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '404':
+          description: Order Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Order Not Found: The specified order does not exist."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
   /trades:
     get:
       tags:
@@ -245,7 +552,51 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    trade_id:
+                      type: string
+                      example: "TRD123456"
+                    symbol:
+                      type: string
+                      example: "AAPL"
+                    quantity:
+                      type: integer
+                      example: 100
+                    price:
+                      type: number
+                      example: 150.25
+                    timestamp:
+                      type: string
+                      format: date-time
+                      example: "2024-02-07T12:30:45Z"
+                    status:
+                      type: string
+                      example: "filled"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error: Something went wrong on the server side."
   /instruments:
     get:
       tags:
@@ -263,7 +614,27 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    instrument_id:
+                      type: string
+                      example: "INS123456"
+                    name:
+                      type: string
+                      example: "AAPL"
+                    type:
+                      type: string
+                      example: "Stock"
+                    exchange:
+                      type: string
+                      example: "NYSE"
+                    currency:
+                      type: string
+                      example: "USD"
 components:
   securitySchemes:
     ApiKeyAuth:
