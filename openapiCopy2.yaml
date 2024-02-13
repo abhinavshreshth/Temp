@@ -1,0 +1,1451 @@
+openapi: 3.0.0
+servers:
+  - url: https://wss1.mtsp.co.in:16107
+
+info:
+  description: |
+    This is a sample server designed for the MTS application.
+    You can learn more about api by visiting https://www.multitradesoftech.com/ 
+    or joining the discussion on irc.freenode.net, #api.
+    To test the authorization filters for this sample, you can utilize
+    the API key special-key.
+
+    # Introduction
+    This API is documented in OpenAPI format and is designed to 
+    facilitate algorithmic trading activities. It incorporates 
+    standard REST API principles to enable seamless communication 
+    between trading applications and the underlying platform. 
+    The structure of the API is based on the familiar Petstore 
+    sample provided by the swagger.io team. Additionally, it has
+    been extended to showcase the capabilities of the generator-
+    openapi-repo tool and leverage MTS documentation. In addition 
+    to adhering to standard OpenAPI syntax, the API also utilizes a 
+    few vendor extensions to enhance its functionality.
+
+    # OpenAPI Specification
+    The API follows the OpenAPI format and is specifically
+    designed to support algorithmic trading activities. It
+    provides comprehensive documentation on endpoints, request
+    /response formats, and authentication mechanisms,
+    making it easy for developers to integrate with trading
+    applications.
+
+    # Cross-Origin Resource Sharing
+    Cross-Origin Resource Sharing (CORS) is implemented in compliance
+    with the W3C spec, enabling seamless cross-domain communication 
+    from web-based trading applications. All responses adhere to a 
+    wildcard same-origin policy, ensuring public accessibility across
+    various platforms.
+
+    # Authentication
+
+    Petstore offers two forms of authentication:
+      - API Key
+      - OAuth2
+    OAuth2 - an open protocol to allow secure authorization in a simple
+    and standard method from web, mobile and desktop applications.
+
+    <!-- ReDoc-Inject: <security-definitions> -->
+
+  version: 1.0.0
+  title: Multitrade Rest API Docs
+  termsOfService: 'https://www.multitradesoftech.com/index.html/terms/'
+  contact:
+    name: API Support
+    email: info@multitradesoftech.com
+    url: https://www.multitradesoftech.com/
+  x-logo:
+    url: 'https://raw.githubusercontent.com/abhinavshreshth/Temp/main/mtslogo.png'
+    altText: Mulitrade logo
+  license:
+    name: Multitrade Softech API 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+externalDocs:
+  description: Find out how you can retup our rest API.
+  url: 'https://www.multitradesoftech.com/'
+
+x-tagGroups:
+  - name: API
+    tags:
+      - Auth
+      - ClientConfig
+      - Orders
+      - trades
+      - Instruments
+
+
+paths:
+  /connect/login:
+    post:
+      tags:
+        - Auth
+      summary: Login Endpoint
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                api_key:
+                  type: string
+                api_secrets:
+                  type: string
+      parameters:
+        - name: Api-Version
+          in: header
+          required: true
+          schema:
+            type: string
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "successfull"
+                  data:
+                    type: object
+                    properties:
+                      request_token:
+                        type: string
+                        example: "o%sZ|iPUWe7xfUQgBXKX"
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid unique key provided by user."
+      x-codeSamples:
+        - lang: 'Python'
+          source: |
+            import requests
+
+            url = "https://wss1.mtsp.co.in:16107/connect/login"
+
+            payload = {
+              "api_key": "string",
+              "api_secrets": "string"
+            }
+
+            headers = {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Api-Version": "3"
+            }
+
+            response = requests.post(url, data=payload, headers=headers)
+
+            data = response.json()
+            print(data)
+        - lang: curl
+          source: |
+            curl -i -X POST \
+              https://wss1.mtsp.co.in:16107/connect/login \
+              -H 'Api-Version: string' \
+              -H 'Content-Type: application/x-www-form-urlencoded' \
+              -d api_key=string \
+              -d api_secrets=string
+            }
+        - lang: Node.js
+          source: |
+            import fetch from 'node-fetch';
+
+            async function run() {
+              const formData = {
+                api_key: 'string',
+                api_secrets: 'string'
+              };
+
+              const resp = await fetch(
+                `https://wss1.mtsp.co.in:16107/connect/login`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Api-Version': 'string'
+                  },
+                  body: new URLSearchParams(formData).toString()
+                }
+              );
+
+              const data = await resp.text();
+              console.log(data);
+            }
+
+            run();
+        - lang: Payload
+          source: |
+            "application/x-www-form-urlencoded"
+
+            api_key=string&api_secrets=string
+
+
+  
+    delete:
+      tags:
+        - Auth
+      summary: LOGOUT
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Logout Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logout successful. You have been logged out."
+        '400':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+      x-codeSamples:
+        - lang: 'Python'
+          source: |
+            import requests
+
+            url = "https://wss1.mtsp.co.in:16107/connect/login"
+
+            headers = {
+              "Api-Version": "3",
+              "Authorization": "YOUR_API_KEY_HERE"
+            }
+
+            response = requests.delete(url, headers=headers)
+
+            data = response.json()
+            print(data)
+        - lang: curl
+          source: |
+            curl -i -X DELETE \
+              https://wss1.mtsp.co.in:16107/connect/login \
+              -H 'Api-Version: 0' \
+              -H 'Authorization: YOUR_API_KEY_HERE'
+            }
+        - lang: Node.js
+          source: |
+            import fetch from 'node-fetch';
+
+            async function run() {
+              const resp = await fetch(
+                `https://wss1.mtsp.co.in:16107/connect/login`,
+                {
+                  method: 'DELETE',
+                  headers: {
+                    'Api-Version': "3",
+                    Authorization: 'YOUR_API_KEY_HERE'
+                  }
+                }
+              );
+
+              const data = await resp.text();
+              console.log(data);
+            }
+
+            run();
+
+  /session/token:
+    get:
+      tags:
+        - Auth
+      summary: Session_Token
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "successfull"
+                  data:
+                    type: object
+                    properties:
+                      user_type:
+                        type: string
+                        example: "3"
+                      email:
+                        type: string
+                        example: ""
+                      user_name:
+                        type: string
+                        example: ""
+                      user_shortname:
+                        type: string
+                        example: ""
+                      broker:
+                        type: string
+                        example: ""
+                      exchanges:
+                        type: string
+                        example: ""
+                      products:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                          - "CNC"
+                          - "NRML"
+                          - "MIS"
+                      avatar_url:
+                        type: string
+                        example: ""
+                      user_id:
+                        type: string
+                        example: "DAPI1"
+                      api_key:
+                        type: string
+                        example: ""
+                      access_token:
+                        type: string
+                        example: "o%sZ|iPUWe7xfUQgBXKX"
+                      order_types:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                          - "MARKET"
+                          - "LIMIT"
+                          - "SL"
+                          - "SL-M"
+                      login_time:
+                        type: string
+                        example: "2024-02-0313:15:21"
+
+        '400':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+      x-codeSamples:
+        - lang: 'Python'
+          source: |
+            import requests
+
+            url = "https://wss1.mtsp.co.in:16107/session/token"
+
+            headers = {
+              "Api-Version": "3",
+              "Authorization": "YOUR_API_KEY_HERE"
+            }
+
+            response = requests.get(url, headers=headers)
+
+            data = response.json()
+            print(data)
+        - lang: curl
+          source: |
+            curl -i -X GET \
+              https://wss1.mtsp.co.in:16107/session/token \
+              -H 'Api-Version: 0' \
+              -H 'Authorization: YOUR_API_KEY_HERE'
+        - lang: Node.js
+          source: |
+            import fetch from 'node-fetch';
+
+            async function run() {
+              const resp = await fetch(
+                `https://wss1.mtsp.co.in:16107/session/token`,
+                {
+                  method: 'GET',
+                  headers: {
+                    'Api-Version': '0',
+                    Authorization: 'YOUR_API_KEY_HERE'
+                  }
+                }
+              );
+
+              const data = await resp.text();
+              console.log(data);
+            }
+
+            run();
+
+  /user/profile:
+    get:
+      tags:
+        - ClientConfig
+      summary: User_Profile
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "successfull"
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: string
+                        example: "DAPI1"
+                      user_type:
+                        type: string
+                        example: "3"
+                      email:
+                        type: string
+                        example: ""
+                      user_name:
+                        type: string
+                        example: ""
+                      user_shortname:
+                        type: string
+                        example: ""
+                      broker:
+                        type: string
+                        example: ""
+                      exchanges:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                          - "BSECM"
+                          - "BSECOM"
+                          - "BSEFO"
+                          - "BSEFX"
+                          - "BSEINX"
+                          - "CQG"
+                          - "DGCX"
+                          - "IB"
+                          - "MAXXTRADER"
+                          - "MCX"
+                          - "MCX1"
+                          - "NCDEX"
+                          - "NSECD"
+                          - "NSECM"
+                          - "NSECOM"
+                          - "NSEFO"
+                          - "NSEIFSC"
+                          - "NSESLBM"
+                          - "XT"
+                      products:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                          - "CNC"
+                          - "NRML"
+                      order-types:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                          - "MARKET"
+                          - "LIMIT"
+                          - "SL"
+                          - "SL-M"
+                      avatar_url:
+                        type: string
+                        example: ""
+
+        '400':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+      x-codeSamples:
+        - lang: 'Python'
+          source: |
+            import requests
+
+            url = "https://wss1.mtsp.co.in:16107/user/profile"
+
+            headers = {
+              "Api-Version": "3",
+              "Authorization": "YOUR_API_KEY_HERE"
+            }
+
+            response = requests.get(url, headers=headers)
+
+            data = response.json()
+            print(data)
+        - lang: curl
+          source: |
+            curl -i -X GET \
+              https://wss1.mtsp.co.in:16107/user/profile \
+              -H 'Api-Version: 0' \
+              -H 'Authorization: YOUR_API_KEY_HERE'
+        - lang: Node.js
+          source: |
+            import fetch from 'node-fetch';
+
+            async function run() {
+              const resp = await fetch(
+                `https://wss1.mtsp.co.in:16107/user/profile`,
+                {
+                  method: 'GET',
+                  headers: {
+                    'Api-Version': '0',
+                    Authorization: 'YOUR_API_KEY_HERE'
+                  }
+                }
+              );
+
+              const data = await resp.text();
+              console.log(data);
+            }
+
+            run();
+
+  /user/margins:
+    get:
+      tags:
+        - ClientConfig
+      summary: User_Margin
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "successfull"
+                  data:
+                    type: object
+                    properties:
+                      DEPOSIT:
+                        type: object
+                        properties:
+                          enabled:
+                            type: string
+                            example: "true"
+                          net:
+                            type: string
+                            example: "-186819082.50"
+                          available:
+                            type: object
+                            properties:
+                              adhoc_margin:
+                                type: string
+                                example: "0.00"
+                              cash:
+                                type: string
+                                example: "0.00"
+                              collateral:
+                                type: string
+                                example: "0.00"
+                              intraday_payin:
+                                type: string
+                                example: "0"
+                          utilized:
+                            type: object
+                            properties:
+                              debits:
+                                type: string
+                                example: "186819082.50"
+                              exposure:
+                                type: string
+                                example: "0.00"
+                              m2m_realised:
+                                type: string
+                                example: "0"
+                              m2m_unrealised:
+                                type: string
+                                example: "0.00"
+                              option_premium:
+                                type: string
+                                example: "0"
+                              payout:
+                                type: string
+                                example: "0.00"
+                              span:
+                                type: string
+                                example: "0.00"
+                              holding_sales:
+                                type: string
+                                example: "0.00"
+                              turnover:
+                                type: string
+                                example: "0.00"
+
+        '400':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+      x-codeSamples:
+        - lang: 'Python'
+          source: |
+            import requests
+
+            url = "https://wss1.mtsp.co.in:16107/user/profile"
+
+            headers = {
+              "Api-Version": "3",
+              "Authorization": "YOUR_API_KEY_HERE"
+            }
+
+            response = requests.get(url, headers=headers)
+
+            data = response.json()
+            print(data)
+        - lang: curl
+          source: |
+            curl -i -X GET \
+              https://wss1.mtsp.co.in:16107/user/profile \
+              -H 'Api-Version: 0' \
+              -H 'Authorization: YOUR_API_KEY_HERE'
+        - lang: Node.js
+          source: |
+            import fetch from 'node-fetch';
+
+            async function run() {
+              const resp = await fetch(
+                `https://wss1.mtsp.co.in:16107/user/margins`,
+                {
+                  method: 'GET',
+                  headers: {
+                    'Api-Version': '0',
+                    Authorization: 'YOUR_API_KEY_HERE'
+                  }
+                }
+              );
+
+              const data = await resp.text();
+              console.log(data);
+            }
+
+            run();
+
+  /orders/regular:
+    post:
+      tags:
+        - Orders
+      summary: Orders_Regular
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                tradingsecurity:
+                  type: integer
+                  example: '3045'
+                exchange:
+                  type: string
+                  example: NSECM
+                transaction_type:
+                  type: string
+                  example: BUY
+                order_type:
+                  type: string
+                  example: LIMIT
+                quantity:
+                  type: integer
+                  example: '100000'
+                validity:
+                  type: string
+                  example: DAY
+                price:
+                  type: integer
+                  example: '510'
+                product_type:
+                  type: string
+                  example: CNC
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful order placement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "successfull"
+                  data:
+                    type: object
+                    properties:
+                      DEPOSIT:
+                        type: object
+                        properties:
+                          enabled:
+                            type: string
+                            example: "true"
+                          net:
+                            type: string
+                            example: "-186819082.50"
+                          available:
+                            type: object
+                            properties:
+                              adhoc_margin:
+                                type: string
+                                example: "0.00"
+                              cash:
+                                type: string
+                                example: "0.00"
+                              collateral:
+                                type: string
+                                example: "0.00"
+                              intraday_payin:
+                                type: string
+                                example: "0"
+                          utilized:
+                            type: object
+                            properties:
+                              debits:
+                                type: string
+                                example: "186819082.50"
+                              exposure:
+                                type: string
+                                example: "0.00"
+                              m2m_realised:
+                                type: string
+                                example: "0"
+                              m2m_unrealised:
+                                type: string
+                                example: "0.00"
+                              option_premium:
+                                type: string
+                                example: "0"
+                              payout:
+                                type: string
+                                example: "0.00"
+                              span:
+                                type: string
+                                example: "0.00"
+                              holding_sales:
+                                type: string
+                                example: "0.00"
+                              turnover:
+                                type: string
+                                example: "0.00"
+
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Bad Request: Invalid request parameters."
+      x-codeSamples:
+        - lang: 'Python'
+          source: |
+            import requests
+
+            url = "https://wss1.mtsp.co.in:16107/orders/regular"
+
+            payload = {
+              "tradingsecurity": "3045",
+              "exchange": "NSECM",
+              "transaction_type": "BUY",
+              "order_type": "LIMIT",
+              "quantity": "100000",
+              "validity": "DAY",
+              "price": "510",
+              "product_type": "CNC"
+            }
+
+            headers = {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Api-Version": "3",
+              "Authorization": "YOUR_API_KEY_HERE"
+            }
+
+            response = requests.post(url, data=payload, headers=headers)
+
+            data = response.json()
+            print(data)
+        - lang: curl
+          source: |
+            curl -i -X POST \
+              https://wss1.mtsp.co.in:16107/orders/regular \
+              -H 'Api-Version: 0' \
+              -H 'Authorization: YOUR_API_KEY_HERE' \
+              -H 'Content-Type: application/x-www-form-urlencoded' \
+              -d tradingsecurity=3045 \
+              -d exchange=NSECM \
+              -d transaction_type=BUY \
+              -d order_type=LIMIT \
+              -d quantity=100000 \
+              -d validity=DAY \
+              -d price=510 \
+              -d product_type=CNC
+        - lang: Node.js
+          source: |
+            import fetch from 'node-fetch';
+
+            async function run() {
+              const formData = {
+                tradingsecurity: '3045',
+                exchange: 'NSECM',
+                transaction_type: 'BUY',
+                order_type: 'LIMIT',
+                quantity: '100000',
+                validity: 'DAY',
+                price: '510',
+                product_type: 'CNC'
+              };
+
+              const resp = await fetch(
+                `https://wss1.mtsp.co.in:16107/orders/regular`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Api-Version': '0',
+                    Authorization: 'YOUR_API_KEY_HERE'
+                  },
+                  body: new URLSearchParams(formData).toString()
+                }
+              );
+
+              const data = await resp.text();
+              console.log(data);
+            }
+
+            run();
+        - lang: Payload
+          source: |
+            "application/x-www-form-urlencoded"
+
+            tradingsecurity=3045&exchange=NSECM&transaction_type=BUY&order_type=LIMIT&quantity=100000&validity=DAY&price=510&product_type=CNC
+
+  /orders/regular/2:
+    put:
+      tags:
+        - Orders
+      summary: Orders_Modify_Quantity
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                order_type:
+                  type: string
+                  example: 'MARKET   '
+                quantity:
+                  type: integer
+                  example: '5'
+                validity:
+                  type: string
+                  example: DAY
+                price:
+                  type: integer
+                  example: '500'
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful order modification
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    example: "ORD123457"
+                  message:
+                    type: string
+                    example: "Order quantity modified successfully."
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Bad Request: Invalid request parameters."
+      x-codeSamples:
+        - lang: 'Python'
+          source: |
+            import requests
+
+            url = "https://wss1.mtsp.co.in:16107/orders/regular/2"
+
+            payload = {
+              "order_type": "MARKET   ",
+              "quantity": "5",
+              "validity": "DAY",
+              "price": "500"
+            }
+
+            headers = {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Api-Version": "3",
+              "Authorization": "YOUR_API_KEY_HERE"
+            }
+
+            response = requests.put(url, data=payload, headers=headers)
+
+            data = response.json()
+            print(data)
+        - lang: curl
+          source: |
+            curl -i -X PUT \
+              https://wss1.mtsp.co.in:16107/orders/regular/2 \
+              -H 'Api-Version: 0' \
+              -H 'Authorization: YOUR_API_KEY_HERE' \
+              -H 'Content-Type: application/x-www-form-urlencoded' \
+              -d 'order_type=MARKET   ' \
+              -d quantity=5 \
+              -d validity=DAY \
+              -d price=500
+        - lang: Node.js
+          source: |
+            import fetch from 'node-fetch';
+
+            async function run() {
+              const formData = {
+                order_type: 'MARKET   ',
+                quantity: '5',
+                validity: 'DAY',
+                price: '500'
+              };
+
+              const resp = await fetch(
+                `https://wss1.mtsp.co.in:16107/orders/regular/2`,
+                {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Api-Version': '0',
+                    Authorization: 'YOUR_API_KEY_HERE'
+                  },
+                  body: new URLSearchParams(formData).toString()
+                }
+              );
+
+              const data = await resp.text();
+              console.log(data);
+            }
+
+            run();
+        - lang: Payload
+          source: |
+            "application/x-www-form-urlencoded"
+
+            order_type=MARKET%20%20%20&quantity=5&validity=DAY&price=500
+  /orders/regular/1:
+    put:
+      tags:
+        - Orders
+      summary: Orders_Regular_MARKET
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                order_type:
+                  type: string
+                  example: MARKET
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful order update
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    example: "ORD123458"
+                  message:
+                    type: string
+                    example: "Order updated to MARKET type successfully."
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Bad Request: Invalid request parameters."
+      x-codeSamples:
+      - lang: 'Python'
+        source: |
+          import requests
+
+          url = "https://wss1.mtsp.co.in:16107/orders/regular/1"
+
+          payload='price=610'
+          headers = {
+            'Api-Version': '3',
+            'Authorization': 'API_KEY:TOKEN'
+          }
+
+          response = requests.request("PUT", url, headers=headers, data=payload)
+
+          print(response.text)
+      - lang: 'Node.js'
+        source: |
+          var request = require('request');
+          var options = {
+            'method': 'PUT',
+            'url': 'https://wss1.mtsp.co.in:16107/orders/regular/1',
+            'headers': {
+              'Api-Version': '3',
+              'Authorization': API_KEY:TOKEN'
+            },
+            form: {
+              'price': '610'
+            }
+          };
+          request(options, function (error, response) {
+            if (error) throw new Error(error);
+            console.log(response.body);
+          });
+
+      - lang: 'curl'
+        source: |
+          curl --location --request PUT 'https://wss1.mtsp.co.in:16107/orders/regular/1' \
+          --header 'Api-Version: 3' \
+          --header 'Authorization: API_KEY:TOKEN' \
+          --data-urlencode 'price=610'
+
+    delete:
+      tags:
+        - Orders
+      summary: Orders_Regular_CANCEL
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "successfull"
+                  data:
+                    type: object
+                    properties:
+                      order_id:
+                        type: string
+                        example: "0"
+
+        '400':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+      x-codeSamples:
+      - lang: 'Python'
+        source: |
+          import requests
+
+          url = "https://wss1.mtsp.co.in:16107/orders/regular/1"
+
+          payload={}
+          headers = {
+            'Api-Version': '3',
+            'Authorization': 'API_KEY:TOKEN'
+          }
+
+          response = requests.request("DELETE", url, headers=headers, data=payload)
+
+          print(response.text)
+
+      - lang: 'Node.js'
+        source: |
+          var request = require('request');
+          var options = {
+            'method': 'DELETE',
+            'url': 'https://wss1.mtsp.co.in:16107/orders/regular/1',
+            'headers': {
+              'Api-Version': '3',
+              'Authorization': 'API_KEY:TOKEN'
+            },
+            form: {
+
+            }
+          };
+          request(options, function (error, response) {
+            if (error) throw new Error(error);
+            console.log(response.body);
+          });
+
+
+      - lang: 'curl'
+        source: |
+          curl --location --request DELETE 'https://wss1.mtsp.co.in:16107/orders/regular/1' \
+          --header 'Api-Version: 3' \
+          --header 'Authorization: 'API_KEY:TOKEN'
+  /trades:
+    get:
+      tags:
+        - trades
+      summary: TRADE
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "successfull"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        trade_id:
+                          type: string
+                          example: "2007"
+                        order_id:
+                          type: string
+                          example: "1"
+                        exchange:
+                          type: string
+                          example: "NSECM"
+                        tradingsymbol:
+                          type: string
+                          example: "SBIN"
+                        instrument_token:
+                          type: string
+                          example: "NSECM"
+                        product:
+                          type: string
+                          example: "CNC"
+                        average_price:
+                          type: string
+                          example: "626.45000000000005"
+                        quantity:
+                          type: string
+                          example: "2"
+                        tag:
+                          type: string
+                          example: ""
+                        placed_by:
+                          type: string
+                          example: "DAPI1"
+                        userid:
+                          type: string
+                          example: "DAPI1"
+                        transaction_type:
+                          type: string
+                          example: "BUY"
+                        exchange_order_id:
+                          type: string
+                          example: "O3045927"
+                        fill_timestamp:
+                          type: string
+                          example: "03/02/202416:46:18"
+                        order_timestamp:
+                          type: string
+                          example: "11:16:18"
+                        exchange_timestamp:
+                          type: string
+                          example: "03/02/202416:46:18"
+                      required:
+                        - trade_id
+                        - order_id
+                        - exchange
+                        - tradingsymbol
+                        - instrument_token
+                        - product
+                        - average_price
+                        - quantity
+                        - tag
+                        - placed_by
+                        - userid
+                        - transaction_type
+                        - exchange_order_id
+                        - fill_timestamp
+                        - order_timestamp
+                        - exchange_timestamp
+
+        '400':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unauthorized: API key missing or invalid."
+      x-codeSamples:
+      - lang: 'Python'
+        source: |
+          import requests
+
+          url = "https://wss1.mtsp.co.in:16107/trades"
+
+          payload={}
+          headers = {
+            'Api-Version': '3',
+            'Authorization': 'API_KEY:TOKEN'
+          }
+
+          response = requests.request("GET", url, headers=headers, data=payload)
+
+          print(response.text)
+
+
+      - lang: 'Node.js'
+        source: |
+          var request = require('request');
+          var options = {
+            'method': 'GET',
+            'url': 'https://wss1.mtsp.co.in:16107/trades',
+            'headers': {
+              'Api-Version': '3',
+              'Authorization': 'API_KEY:TOKEN'
+            }
+          };
+          request(options, function (error, response) {
+            if (error) throw new Error(error);
+            console.log(response.body);
+          });
+
+
+
+      - lang: 'curl'
+        source: |
+          curl --location 'https://wss1.mtsp.co.in:16107/trades' \
+          --header 'Api-Version: 3' \
+          --header 'Authorization: 'API_KEY:TOKEN'
+  /instruments:
+    get:
+      tags:
+        - Instruments
+      summary: Instrument
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: Api-Version
+          in: header
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "successfull"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        security_id:
+                          type: string
+                          example: "2000259"
+                        security_id.:
+                          type: string
+                          example: "2000259"
+                        symbol:
+                          type: string
+                          example: "TRENT"
+                        security_description:
+                          type: string
+                          example: "TRENT24FEB3640PE"
+                        previous_close:
+                          type: string
+                          example: "128.75"
+                        expiry_date:
+                          type: string
+                          example: "29FEB2024"
+                        strike_price:
+                          type: string
+                          example: "3640.00"
+                        tick_size:
+                          type: string
+                          example: "0.05"
+                        quantity:
+                          type: string
+                          example: "400.00"
+                        option_type:
+                          type: string
+                          example: "PE"
+                        instrument_type:
+                          type: string
+                          example: "OPTSTK"
+                        exchange:
+                          type: string
+                          example: "BSEFO"
+                      required:
+                        - security_id
+                        - security_id.
+                        - symbol
+                        - security_description
+                        - previous_close
+                        - expiry_date
+                        - strike_price
+                        - tick_size
+                        - quantity
+                        - option_type
+                        - instrument_type
+                        - exchange
+
+      x-codeSamples:
+      - lang: 'Python'
+        source: |
+          import requests
+
+          url = "https://wss1.mtsp.co.in:16107/instruments"
+
+          payload={}
+          headers = {
+            'Api-Version': '3',
+            'Authorization': 'API_KEY:TOKEN'
+          }
+
+          response = requests.request("GET", url, headers=headers, data=payload)
+
+          print(response.text)
+
+      - lang: 'Node.js'
+        source: |
+          var request = require('request');
+          var options = {
+            'method': 'GET',
+            'url': 'https://wss1.mtsp.co.in:16107/instruments',
+            'headers': {
+              'Api-Version': '3',
+              'Authorization': 'API_KEY:TOKEN'
+            },
+            form: {
+
+            }
+          };
+          request(options, function (error, response) {
+            if (error) throw new Error(error);
+            console.log(response.body);
+          });
+
+      - lang: 'curl'
+        source: |
+          curl --location 'https://wss1.mtsp.co.in:16107/instruments' \
+          --header 'Api-Version: 3' \
+          --header 'Authorization: 'API_KEY:TOKEN'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
